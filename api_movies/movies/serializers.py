@@ -14,9 +14,14 @@ class ReviewSerializer(serializers.ModelSerializer):
 class MovieSerializer(serializers.ModelSerializer):
     user = serializers.ReadOnlyField(source='user.username')
     user_id = serializers.ReadOnlyField(source='user.id')
+    reviews_count = serializers.SerializerMethodField()
     reviews = ReviewSerializer(many=True)
+
+    def get_reviews_count(self, obj):
+        return models.Review.objects.filter(movie=obj).count()
+
 
     class Meta:
         model = models.Movie
-        fields = ('id', 'title', 'description', 'genre', 'movie_length', 'created_at', 'user', 'user_id', 'reviews')
+        fields = ('id', 'title', 'description', 'genre', 'movie_length', 'created_at', 'user', 'user_id', 'reviews_count', 'reviews')
 
