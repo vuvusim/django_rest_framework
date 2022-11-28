@@ -9,4 +9,5 @@ urlpatterns = [
     
     path('review/<int:pk>/', views.ReviewDetail.as_view()),
     path('movie/<int:pk>/like/', views.MovieLikeCreate.as_view()),
+    path('signup/', views.UserCreate.as_view()),
 ]
