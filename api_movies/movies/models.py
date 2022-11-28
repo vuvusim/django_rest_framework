@@ -28,3 +28,28 @@ class Movie(models.Model):
         ordering = ('-created_at', )
 
 
+class Review(models.Model):
+    body = models.TextField(_("body"), max_length=10000)
+    movie = models.ForeignKey(
+        Movie, 
+        verbose_name=_("movie"), 
+        on_delete=models.CASCADE,
+        related_name=_('reviews')
+    )
+    user = models.ForeignKey(
+        User, 
+        verbose_name=_("user"), 
+        on_delete=models.CASCADE,
+        related_name=_('reviews')
+    )
+    created_at = models.DateTimeField(_("created at"), auto_now_add=True)
+
+    def __str__(self):
+        return _("Review on {movie_id} by {user} at {created_at}").format(
+            movie_id=self.movie.id,
+            user=self.user,
+            created_at=self.created_at
+        )
+
+    class Meta:
+        ordering = ('-created_at', )
