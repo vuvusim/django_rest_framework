@@ -66,3 +66,19 @@ class ReviewDetail(generics.RetrieveUpdateAPIView):
             return self.update(request, *args, **kwargs)
         else:
             raise ValidationError(_('You can not change other users reviews'))
+
+
+class MovieLikeCreate(generics.CreateAPIView):
+    serializer_class = serializers.MovieLikeSerializer
+    permission_classes = [permissions.IsAuthenticated]
+
+    def perform_create(self, serializer):
+        user = self.request.user
+        movie = models.Movie.objects.get(pk=self.kwargs['pk'])
+        serializer.save(user=user, movie=movie)
+
+
+    def get_queryset(self):
+        user = self.request.user
+        movie = models.Movie.objects.get(pk=self.kwargs['pk'])
+        return models.MovieLike.objects.filter(user=user, movie=movie)

@@ -53,3 +53,19 @@ class Review(models.Model):
 
     class Meta:
         ordering = ('-created_at', )
+
+
+class MovieLike(models.Model):
+    movie = models.ForeignKey(
+        Movie, 
+        verbose_name=_("movie"), 
+        on_delete=models.CASCADE,
+        related_name='likes'
+    )
+    user = models.ForeignKey(User, 
+        verbose_name=_("user"), 
+        on_delete=models.CASCADE,
+        related_name='movie_likes'
+    )
+    def __str__(self):
+        return f"{self.user} likes {self.movie}"
